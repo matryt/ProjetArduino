@@ -7,4 +7,4 @@
 
 - Début de la modélisation 3D sur Onshape de la structure du robot
 
-- Cablage et test des deux moteurs avec le pont H 
+- Début du Cablage et test des deux moteurs avec le pont H 

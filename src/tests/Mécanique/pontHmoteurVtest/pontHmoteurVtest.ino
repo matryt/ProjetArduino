@@ -3,7 +3,7 @@
 #define borneIN2        8       // On associe la borne "IN2" du L298N à la pin D8 de l'Arduino
 #define borneIN3        7       // On associe la borne "IN3" du L298N à la pin D7 de l'Arduino
 #define borneIN4        6       // On associe la borne "IN4" du L298N à la pin D6 de l'Arduino
-#define borneENB        5       // On associe la borne "ENB" du L298N à la pin D5 de l'Arduino (PWM possible sur cette broche)
+#define borneENB        3       // On associe la borne "ENB" du L298N à la pin D5 de l'Arduino (PWM possible sur cette broche)
 
 //*************************//
 // Constantes du programme //

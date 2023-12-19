@@ -1,3 +1,5 @@
-Projet.ino
 projetarduino.ino
 .vscode/
+CMakeLists.txt
+.idea/
+cmake-build-debug/

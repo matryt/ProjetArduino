@@ -19,10 +19,13 @@ const char MARCHE_ARRIERE = 'R';            // Défini une constante pour la "ma
 // Variables du programme //
 //************************//
 int vitesse;                    // Spécifie la vitesse de rotation du moteur, entre son minimum (0) et son maximum (255) <= signal PWM
+#include <Servo.h>
+Servo monServo;
 //*******//
 // SETUP //
 //*******//
 void setup() {
+  monServo.attach(13);
   // Configuration de toutes les pins de l'Arduino en "sortie" (car elles attaquent les entrées du module L298N)
   pinMode(borneENA, OUTPUT);
   pinMode(borneIN1, OUTPUT);
@@ -36,6 +39,14 @@ void setup() {
 // Boucle principale : LOOP //
 //**************************//
 void loop() {
+  for (int i = 0; i <= 180; i++) {
+    monServo.write(i);
+    delay(15);
+  }
+  for (int i = 180; i >= 0; i--) {
+    monServo.write(i);
+    delay(15);
+  }
   digitalWrite(borneIN1,HIGH);
   digitalWrite(borneIN2,LOW);
   digitalWrite(borneENA,HIGH);

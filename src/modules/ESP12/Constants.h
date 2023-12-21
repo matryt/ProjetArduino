@@ -26,7 +26,14 @@ struct WIFI {
     static const char* passwordMat1;
     static const char* ssidMat2;
     static const char* passwordMat2;
+    static const char* ssidEsp12;
+    static const char* passwordEsp12;
 
+};
+
+struct WIFI_HOTSPOT {
+    static const char* ssidDiffusion;
+    static const char* passwordDiffusion;
 };
 
 
@@ -34,6 +41,10 @@ const char* WIFI::ssidMat1 = "Bbox-324A417C";
 const char* WIFI::passwordMat1 = "Evy3PmrR3arAJPmUeG";
 const char* WIFI::ssidMat2 = "Bbox-5DD39C3D";
 const char* WIFI::passwordMat2 = "rV4J4MfDZsh7h1146V";
+const char* WIFI::ssidEsp12 = "Matlo_Hotspot";
+const char* WIFI::passwordEsp12 = "HotspotRobot!";
+const char* WIFI_HOTSPOT::ssidDiffusion = "Matlo_Hotspot";
+const char* WIFI_HOTSPOT::passwordDiffusion = "HotspotRobot!";
 
 
 #endif //CONSTANTS_H

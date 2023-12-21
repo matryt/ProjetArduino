@@ -1,7 +1,6 @@
-#include "modules/ESP32/LiveStream.cpp"
+#include "LiveStream.cpp"
 
 LiveStream live;
-Hotspot hotspot;
 
 void setup() {
   // put your setup code here, to run once:

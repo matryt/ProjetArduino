@@ -1,0 +1,6 @@
+https://gist.github.com/robopara/ccfeee3335feeafdb9c19c9407c69d32
+https://medium.com/swlh/face-detection-on-the-edge-in-under-20-mins-and-20-e36aedccd6cc
+https://www.edgemicrotech.com/maixpy-16-maixduino-face-recognition-ai-micropython/
+https://github.com/tlack/m5stickv-camera-webserver/blob/master/run.py
+https://www.phind.com/search?cache=upmd1qfp827i6k41smp2mi7o
+https://www.phind.com/search?cache=chma83fz7g5866qndlrn1av9

@@ -17,14 +17,14 @@ while True:
 
    try:
        print('Connexion de', client_address)
-
+       total_data = b''
        # Réceptionnez les données en petites tranches et les imprimez
        while True:
            data = connection.recv(16)
-           if data:
-               print('Reçu {!r}'.format(data))
-           else:
-            break
+           total_data += data
+           if not data:
+               break
    finally:
        # Nettoyez la connexion
+       print(total_data)
        connection.close()

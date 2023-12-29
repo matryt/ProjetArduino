@@ -20,9 +20,7 @@ fm.register(27,fm.fpioa.SPI1_SCLK, force=True)#sclk
 esp = network.ESP32_SPI(cs=fm.fpioa.GPIOHS10, rst=fm.fpioa.GPIOHS11, rdy=fm.fpioa.GPIOHS12, spi=1)
 
 # Connectez-vous au WiFi
-
-# Connectez-vous à votre réseau Wi-Fi
-esp.connect(WIFI_SSID, WIFI_PASS)  # Remplacez "SSID" et "pwd" par votre SSID et mot de passe
+esp.connect(WIFI_SSID, WIFI_PASS)
 
 while not esp.isconnected():
     time.sleep(1)

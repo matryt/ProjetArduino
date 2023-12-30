@@ -28,6 +28,5 @@ while not esp.isconnected():
 print("Adresse IP:", esp.ifconfig()[0])
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(("192.168.137.1", 5000))
-s.send("Hello \n")
-s.send("COucou \n")
+s.send(b"\n")
 s.close()

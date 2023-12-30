@@ -11,8 +11,8 @@ from fpioa_manager import fm
 from board import board_info
 import utime
 from machine import UART
-import network
 import socket
+import network
 
 ### Variables globales
 
@@ -45,16 +45,55 @@ img_face = image.Image(size=(128, 128))
 a = img_face.pix_to_ai()
 ACCURACY = 80
 
-WIFI_SSID = "DESKTOP-M5RI8E3"
-WIFI_PASS = "OrdiMat2005!"
-fm.register(25,fm.fpioa.GPIOHS10)#cs
-fm.register(8,fm.fpioa.GPIOHS11)#rst
-fm.register(9,fm.fpioa.GPIOHS12)#rdy
-print("Use Hareware SPI for other maixduino")
-fm.register(28,fm.fpioa.SPI1_D0, force=True)#mosi
-fm.register(26,fm.fpioa.SPI1_D1, force=True)#miso
-fm.register(27,fm.fpioa.SPI1_SCLK, force=True)#sclk
-esp = network.ESP32_SPI(cs=fm.fpioa.GPIOHS10, rst=fm.fpioa.GPIOHS11, rdy=fm.fpioa.GPIOHS12, spi=1)
+### Classe
+
+class wifi():
+
+    nic = None
+
+    def reset(force=False, reply=5, is_hard=True):
+        if force == False and __class__.isconnected():
+            return True
+        try:
+            # IO map for ESP32 on Maixduino
+            fm.register(25,fm.fpioa.GPIOHS10)#cs
+            fm.register(8,fm.fpioa.GPIOHS11)#rst
+            fm.register(9,fm.fpioa.GPIOHS12)#rdy
+
+            if is_hard:
+                print("Use Hareware SPI for other maixduino")
+                fm.register(28,fm.fpioa.SPI1_D0, force=True)#mosi
+                fm.register(26,fm.fpioa.SPI1_D1, force=True)#miso
+                fm.register(27,fm.fpioa.SPI1_SCLK, force=True)#sclk
+                __class__.nic = network.ESP32_SPI(cs=fm.fpioa.GPIOHS10, rst=fm.fpioa.GPIOHS11, rdy=fm.fpioa.GPIOHS12, spi=1)
+                print("ESP32_SPI firmware version:", __class__.nic.version())
+            else:
+                # Running within 3 seconds of power-up can cause an SD load error
+                print("Use Software SPI for other hardware")
+                fm.register(28,fm.fpioa.GPIOHS13, force=True)#mosi
+                fm.register(26,fm.fpioa.GPIOHS14, force=True)#miso
+                fm.register(27,fm.fpioa.GPIOHS15, force=True)#sclk
+                __class__.nic = network.ESP32_SPI(cs=fm.fpioa.GPIOHS10,rst=fm.fpioa.GPIOHS11,rdy=fm.fpioa.GPIOHS12, mosi=fm.fpioa.GPIOHS13,miso=fm.fpioa.GPIOHS14,sclk=fm.fpioa.GPIOHS15)
+                print("ESP32_SPI firmware version:", __class__.nic.version())
+
+            # time.sleep_ms(500) # wait at ready to connect
+        except Exception as e:
+            print(e)
+            return False
+        return True
+
+    def connect(ssid="wifi_name", pasw="pass_word"):
+        if __class__.nic != None:
+            return __class__.nic.connect(ssid, pasw)
+
+    def ifconfig(): # should check ip != 0.0.0.0
+        if __class__.nic != None:
+            return __class__.nic.ifconfig()
+
+    def isconnected():
+        if __class__.nic != None:
+            return __class__.nic.isconnected()
+        return False
 
 ### Fonctions
 
@@ -98,35 +137,45 @@ def process_face():
         record_ftrs.append(record_ftr)
         start_processing = False
 
+def wifi_connection():
+    WIFI_SSID = "DESKTOP-M5RI8E3"
+    WIFI_PASS = "OrdiMat2005!"
+    wifi.reset(is_hard=True)
+    wifi.connect(WIFI_SSID, WIFI_PASS)
+    while not wifi.isconnected():
+        print("Connection in progress...")
+        time.sleep(1)
+    time.sleep(2)
+    return wifi.ifconfig()[2]
+
 def display_result(a, max_score):
     if int(time.time()) % 10 == 0:
         if max_score > ACCURACY:
             a = img.draw_string(i.x(), i.y(), ("%s :%2.1f" % (
                     names[index], max_score)), color=(0, 255, 0), scale=2)
             print("Good face")
+            result = "G"
         else:
             a = img.draw_string(i.x(), i.y(), ("X :%2.1f" % (
                     max_score)), color=(255, 0, 0), scale=2)
             print("Sending image...")
-        send_image_via_socket(a, gateway)
+            result = "F"
+        send_image_via_socket(a, gateway, result)
     return a
 
-def wifi_connection():
-    esp.connect(WIFI_SSID, WIFI_PASS)
-    while not esp.isconnected():
-        print("Connecting to WiFi...")
-        time.sleep(1)
-    return esp.ifconfig()[2]
-
-def send_image_via_socket(img, gateway):
-    try:
-       s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-       s.connect((gateway, 5000))
-       img_jpeg = img.to_bytes(format='jpeg')
-       s.write(img_jpeg)
-       s.close()
-    except Exception as e:
-       pass
+def send_image_via_socket(img, gateway, result):
+  try:
+     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+     s.connect((gateway, 5000))
+     img_jpeg = img.to_bytes(format='jpeg')
+     chunk_size = 1024 # Size of each chunk
+     for i in range(0, len(img_jpeg), chunk_size):
+         chunk = img_jpeg[i:i+chunk_size]
+         s.write(chunk)
+     s.write(b'\n\n\n' + result.encode("utf-8"))
+     s.close()
+  except Exception as e:
+     print(e)
 
 ### Code principal
 

@@ -10,7 +10,6 @@
     <div id="all">
         {% for image in images %}
         <div class="alert">
-            <h2> Alerte entrante </h2>
             <div class="texts">
                 <span class="hour">
                 <h3> Heure </h3>
@@ -21,33 +20,15 @@
                     <p>{{ image.text }}</p>
                 </span>
             </div>
-            <h3> Image </h3>
             <img src="{{ url_for('serve_image') }}" alt="Image">
         </div>
         {% endfor %}
     </div>
 
-    <script async defer>
-        window.onload = function() {
-            var divs = document.querySelectorAll('.alert'); // sélectionnez tous les divs
+    <script async defer src="{{ url_for('static', filename='scripts/colorize.js') }}"></script>
 
-            divs.forEach(function(div) {
-            var texte = div.querySelectorAll("p")[1].innerText; // obtenez le texte du div
+    <script async defer src="{{ url_for('static', filename='scripts/structureImages.js') }}"></script>
 
-            if(texte === 'Incorrect face. Danger !') {
-                div.classList.add('bck-red'); // ajoutez la classe rouge si le texte correspond
-            } else {
-                div.classList.add('bck-green'); // sinon, ajoutez la classe verte
-            }
-            });
-            }
-    </script>
-
-   <!--<script async defer>
-   var socket = io.connect('http://' + document.domain + ':' + location.port);
-   socket.on('reload', function() {
-       window.location.reload();
-   });
-   </script>-->
+    <!--<script async defer src="{{ url_for('static', filename='scripts/socketConnect.js') }}"></script>-->
 </body>
 </html>

@@ -21,7 +21,7 @@ def home():
 
 @app.route('/image')
 def serve_image():
-   return send_from_directory('static', "image.png")
+   return send_from_directory('static', "image.JPG")
 
 def recvall(sock):
   BUFF_SIZE = 1024 # 4 KiB
@@ -65,7 +65,7 @@ def random_content():
 
 def generate_random():
    for i in range(5):
-      time.sleep(randint(10, 30))
+      time.sleep(1)
       random_content()
       #socketio.emit('reload', {'message': 'New content added'})
       print("Content added")

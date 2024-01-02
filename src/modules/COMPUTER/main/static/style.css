@@ -10,6 +10,7 @@ h1, h2, h3 {
 
 h1 {
     text-decoration: underline;
+    font-size: 3em;
 }
 
 h2 {
@@ -23,29 +24,55 @@ h2 {
 }
 
 img {
-    width: 400px;
+    width: 300px;
     text-align: center;
     margin:auto;
+    padding: 0px 10px;
     display:block;
+    margin-top:5px;
+}
+
+.message {
+    flex: 1 1 25%;
 }
 
 #all {
     display: flex;
-    flex-direction: line;
-    justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+#first {
+    width:60%;
+    margin-top: 55px;
+}
+
+#first img {
+    width: 620px;
+}
+
+#other {
+    width: 40%;
 }
 
 .alert {
-    margin: 5px;
+    width: fit-content;
     padding: 10px;
     border-radius: 12px;
-    flex-grow: 1;
+    flex-grow: 0.5;
+}
+
+#first .alert {
+    margin: 5px auto;
+}
+
+#other .alert {
+    margin: 20px auto;
 }
 
 .texts {
     display:flex;
     flex-direction: row;
+    margin-bottom: 15px;
 }
 
 span {

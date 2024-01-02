@@ -78,8 +78,7 @@ class wifi():
 
             # time.sleep_ms(500) # wait at ready to connect
         except Exception as e:
-            print(e)
-            return False
+            raise e
         return True
 
     def connect(ssid="wifi_name", pasw="pass_word"):
@@ -164,20 +163,29 @@ def display_result(a, max_score):
     return a
 
 def send_image_via_socket(img, gateway, result):
-  try:
-     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-     s.connect((gateway, 5000))
-     img_jpeg = img.to_bytes(format='jpeg')
-     chunk_size = 1024 # Size of each chunk
-     for i in range(0, len(img_jpeg), chunk_size):
-         chunk = img_jpeg[i:i+chunk_size]
-         s.write(chunk)
-     s.write(b'\n\n\n' + result.encode("utf-8"))
-     s.close()
-  except Exception as e:
-     print(e)
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((gateway, 5000))
+        img_jpeg = img.to_bytes(format='jpeg')
+        chunk_size = 1024 # Size of each chunk
+        bytes_sent = 0
+        while bytes_sent < len(img_jpeg):
+            gc.collect()
+            sent = s.send(img_jpeg[bytes_sent:bytes_sent+chunk_size])
+            if sent == 0:
+                raise RuntimeError("Socket connection broken")
+            bytes_sent += sent
+        s.send(b'\n\n\n' + result.encode("utf-8"))
+    except OSError as e:
+        raise e
+    except Exception as e:
+        raise e
+    finally:
+        s.close()
 
 ### Code principal
+
+gc.enable()
 
 gateway = init_all()
 

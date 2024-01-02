@@ -2,18 +2,52 @@
 <html>
 <head>
  <title>Images from MaixDuino</title>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+ <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
- {% for image in images %}
- <div>
-     <h2> Image </h2>
-     <h3> Hour </h3>
-     <p>{{ image.timestamp }}</p>
-     <h3> Text </h3>
-     <p>{{ image.text }}</p>
-     <h3> Image </h3>
-     <img src="data:image/jpeg;base64,{{ image.image }}" />
- </div>
- {% endfor %}
+    <h1>Alertes de présence - MaixDuino</h1>
+    <div id="all">
+        {% for image in images %}
+        <div class="alert">
+            <h2> Alerte entrante </h2>
+            <div class="texts">
+                <span class="hour">
+                <h3> Heure </h3>
+                <p>{{ image.timestamp }}</p>
+                </span>
+                <span class="message">
+                    <h3> Message </h3>
+                    <p>{{ image.text }}</p>
+                </span>
+            </div>
+            <h3> Image </h3>
+            <img src="{{ url_for('serve_image') }}" alt="Image">
+        </div>
+        {% endfor %}
+    </div>
+
+    <script async defer>
+        window.onload = function() {
+            var divs = document.querySelectorAll('.alert'); // sélectionnez tous les divs
+
+            divs.forEach(function(div) {
+            var texte = div.querySelectorAll("p")[1].innerText; // obtenez le texte du div
+
+            if(texte === 'Incorrect face. Danger !') {
+                div.classList.add('bck-red'); // ajoutez la classe rouge si le texte correspond
+            } else {
+                div.classList.add('bck-green'); // sinon, ajoutez la classe verte
+            }
+            });
+            }
+    </script>
+
+   <!--<script async defer>
+   var socket = io.connect('http://' + document.domain + ':' + location.port);
+   socket.on('reload', function() {
+       window.location.reload();
+   });
+   </script>-->
 </body>
 </html>

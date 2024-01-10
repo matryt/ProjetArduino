@@ -4,58 +4,80 @@ import socket
 import datetime
 import base64
 from PIL import Image
-import io
 import os
 from random import choice, randint
-#from flask_socketio import SocketIO
+from flask_socketio import SocketIO
 import time
+import redis
+r = redis.Redis()
 
 app = Flask(__name__)
 images = []
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-#socketio = SocketIO(app)
+
+import sqlite3
+
+conn = sqlite3.connect('images.db') # Create a new SQLite database
+c = conn.cursor()
+
+# Create a new table named 'images'
+c.execute("DROP TABLE images")
+c.execute('''CREATE TABLE images (id INTEGER PRIMARY KEY, timestamp TEXT, text TEXT, path TEXT)''')
+
+conn.commit()
+
+conn.close()
+
+
+socketio = SocketIO(app)
 
 @app.route('/', methods=['GET'])
 def home():
-   return render_template('home.html', images=images)
+    conn = sqlite3.connect('images.db')
+    c = conn.cursor()
+    images = c.execute('SELECT * FROM images ORDER BY id DESC').fetchall()
+    conn.close()
+    return render_template('home.html', images=images)
 
-@app.route('/image')
-def serve_image():
-   return send_from_directory('static', "image.JPG")
 
-def recvall(sock):
-  BUFF_SIZE = 1024 # 4 KiB
-  fragments = []
-  data = b''
-  while True:
-     chunk = sock.recv(BUFF_SIZE)
-     if not chunk:
-        break
-     fragments.append(chunk)
-     data = b''.join(fragments)
-  return data
+@app.route('/image/<path>')
+def serve_image(path):
+    print(path)
+    return send_from_directory('static', path)
 
-"""def receive_image(conn):
-  data = recvall(conn)
-  delimiter = data.find(b'\n\n\n')
-  if delimiter != -1:
-     image_data = data[:delimiter]
-     text_data = data[delimiter+3:]
-     image_filename = 'image.png'
-     image = Image.open(io.BytesIO(image_data))
-     image.save(os.path.join('static', image_filename))
-     images.append({'image': image_filename, 'text': text_data.decode("utf-8"), 'timestamp': datetime.datetime.now().strftime("%H:%M:%S")})"""
 
-"""def start_receiving_images():
- with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-  s.bind(('0.0.0.0', 5000))
-  s.listen()
-  while True:
-      conn, addr = s.accept()
-      print('Connected by', addr)
-      threading.Thread(target=receive_image, args=(conn,)).start()"""
+def receive_data(conn):
+    global path
+    data = conn.recv(1024)
+    data = data.decode("utf-8")
+    if data == "U":
+        path = "unknown.png"
+        text = "Unknown face. Danger !"
+    else:
+        path = f"{data}.JPG"
+        text = "Good face ! Go ahead."
+    timestamp = datetime.datetime.now().strftime("%H:%M:%S")
+    conn = sqlite3.connect('images.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO images VALUES (NULL, ?, ?, ?)", (timestamp, text, path))
+    conn.commit()
+    print(c.execute('SELECT * FROM images ORDER BY id DESC').fetchall())
+    c.close()
+    socketio.emit('reload', {'message': 'New content added'})
 
-def random_content():
+
+def start_receiving_images():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.bind(('0.0.0.0', 5000))
+        s.listen()
+        while True:
+            conn, addr = s.accept()
+            print('Connected by', addr)
+            threading.Thread(target=receive_data, args=(conn,)).start()
+
+
+"""def random_content():
    global images
    image_filename = "image.png"
    texts = ["Good face ! Go ahead.", "Incorrect face. Danger !"]
@@ -68,10 +90,10 @@ def generate_random():
       time.sleep(1)
       random_content()
       #socketio.emit('reload', {'message': 'New content added'})
-      print("Content added")
+      print("Content added")"""
 
 if __name__ == "__main__":
-   #threading.Thread(target=start_receiving_images).start()
-   threading.Thread(target=generate_random).start()
-   random_content()
-   app.run(host='localhost', port=5005, debug=True)
+    threading.Thread(target=start_receiving_images).start()
+    """threading.Thread(target=generate_random).start()
+   random_content()"""
+    app.run(host='localhost', port=5005, debug=True)

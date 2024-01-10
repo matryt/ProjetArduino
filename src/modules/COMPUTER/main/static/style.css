@@ -24,7 +24,7 @@ h2 {
 }
 
 img {
-    width: 300px;
+    height: 210px;
     text-align: center;
     margin:auto;
     padding: 0px 10px;
@@ -47,7 +47,7 @@ img {
 }
 
 #first img {
-    width: 620px;
+    height: 420px;
 }
 
 #other {

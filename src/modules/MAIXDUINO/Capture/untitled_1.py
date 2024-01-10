@@ -153,31 +153,20 @@ def display_result(a, max_score):
             a = img.draw_string(i.x(), i.y(), ("%s :%2.1f" % (
                     names[index], max_score)), color=(0, 255, 0), scale=2)
             print("Good face")
-            result = "G"
+            name = names[index].split(".")[1]
         else:
             a = img.draw_string(i.x(), i.y(), ("X :%2.1f" % (
                     max_score)), color=(255, 0, 0), scale=2)
             print("Sending image...")
-            result = "F"
-        send_image_via_socket(a, gateway, result)
+            name = "U"
+        send_image_via_socket(gateway, name)
     return a
 
-def send_image_via_socket(img, gateway, result):
+def send_image_via_socket(gateway, name):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((gateway, 5000))
-        img_jpeg = img.to_bytes(format='jpeg')
-        chunk_size = 1024 # Size of each chunk
-        bytes_sent = 0
-        while bytes_sent < len(img_jpeg):
-            gc.collect()
-            sent = s.send(img_jpeg[bytes_sent:bytes_sent+chunk_size])
-            if sent == 0:
-                raise RuntimeError("Socket connection broken")
-            bytes_sent += sent
-        s.send(b'\n\n\n' + result.encode("utf-8"))
-    except OSError as e:
-        raise e
+        s.send(name)
     except Exception as e:
         raise e
     finally:

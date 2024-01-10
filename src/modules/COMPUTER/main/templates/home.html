@@ -13,14 +13,14 @@
             <div class="texts">
                 <span class="hour">
                 <h3> Heure </h3>
-                <p>{{ image.timestamp }}</p>
+                <p>{{ image[1] }}</p>
                 </span>
                 <span class="message">
                     <h3> Message </h3>
-                    <p>{{ image.text }}</p>
+                    <p>{{ image[2] }}</p>
                 </span>
             </div>
-            <img src="{{ url_for('serve_image') }}" alt="Image">
+            <img src="{{ url_for('serve_image', path=image[3]) }}" alt="Image">
         </div>
         {% endfor %}
     </div>
@@ -29,6 +29,6 @@
 
     <script async defer src="{{ url_for('static', filename='scripts/structureImages.js') }}"></script>
 
-    <!--<script async defer src="{{ url_for('static', filename='scripts/socketConnect.js') }}"></script>-->
+    <script async defer src="{{ url_for('static', filename='scripts/socketConnect.js') }}"></script>
 </body>
 </html>

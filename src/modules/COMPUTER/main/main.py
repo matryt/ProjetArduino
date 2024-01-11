@@ -77,9 +77,10 @@ def start_receiving_images():
             threading.Thread(target=receive_data, args=(conn,)).start()
 
 
-"""def random_content():
+def random_content():
    global images
-   image_filename = "image.png"
+   images = ["unknown.png"] + [f"{i}.JPG" for i in range(1, 3)]
+   image_filename = choice(images)
    texts = ["Good face ! Go ahead.", "Incorrect face. Danger !"]
    text = choice(texts)
    timestamp = datetime.datetime.now().strftime("%H:%M:%S")
@@ -90,10 +91,10 @@ def generate_random():
       time.sleep(1)
       random_content()
       #socketio.emit('reload', {'message': 'New content added'})
-      print("Content added")"""
+      print("Content added")
 
 if __name__ == "__main__":
     threading.Thread(target=start_receiving_images).start()
     """threading.Thread(target=generate_random).start()
-   random_content()"""
+    random_content()"""
     app.run(host='localhost', port=5005, debug=True)

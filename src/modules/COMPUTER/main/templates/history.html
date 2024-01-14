@@ -6,28 +6,11 @@
 </head>
 <body>
     <h1>Historique de détection - MaixDuino</h1>
-    <div id="all">
-        {% for image in images %}
-        <div class="alert">
-            <div class="texts">
-                <span class="hour">
-                <h3> Heure </h3>
-                <p>{{ image[1] }}</p>
-                </span>
-                <span class="message">
-                    <h3> Message </h3>
-                    <p>{{ image[2] }}</p>
-                </span>
-            </div>
-            <img src="{{ url_for('serve_image', path=image[3]) }}" alt="Image">
-        </div>
+    <table>
+    tr>
+        {% for line in history %}
         {% endfor %}
-    </div>
+    </table>
 
-    <script async defer src="{{ url_for('static', filename='scripts/colorize.js') }}"></script>
-
-    <script async defer src="{{ url_for('static', filename='scripts/structureImages.js') }}"></script>
-
-    <script async defer src="{{ url_for('static', filename='scripts/socketConnect.js') }}"></script>
 </body>
 </html>

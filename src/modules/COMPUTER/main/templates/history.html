@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
- <title>Images from MaixDuino</title>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
- <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+ <title>History of MaixDuino detections</title>
+ <link rel="stylesheet" href="{{ url_for('static', filename='history.css') }}">
 </head>
 <body>
-    <h1>Alertes de présence - MaixDuino</h1>
+    <h1>Historique de détection - MaixDuino</h1>
     <div id="all">
         {% for image in images %}
         <div class="alert">

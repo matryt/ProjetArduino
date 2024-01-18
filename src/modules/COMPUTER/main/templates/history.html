@@ -7,9 +7,20 @@
 <body>
     <h1>Historique de détection - MaixDuino</h1>
     <table>
-    tr>
-        {% for line in history %}
-        {% endfor %}
+    <tr>
+    	<th scope="col">ID</th>
+    	<th scope="col">Date</th>
+    	<th scope="col">Heure</th>
+    	<th scope="col">Message</th>
+    	<th scope="col">Image</th>
+    </tr>
+    {% for line in history %}
+     <tr>line[0]</tr>
+     <tr>line[1]</tr>
+     <tr>line[2]</tr>
+     <tr>line[3]</tr>
+     <tr><img src="{{ url_for('serve_image', path=image[4]) }}" alt="Image"></tr>
+    {% endfor %}
     </table>
 
 </body>

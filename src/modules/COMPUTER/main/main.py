@@ -9,25 +9,26 @@ from random import choice, randint
 from flask_socketio import SocketIO
 import time
 import redis
-r = redis.Redis()
+import sqlite3
+import datetime
 
 app = Flask(__name__)
 images = []
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-import sqlite3
 
-conn = sqlite3.connect('images.db') # Create a new SQLite database
-c = conn.cursor()
+connImages = sqlite3.connect('images.db') # Create a new SQLite database
+cImages = connImages.cursor()
+connHistory = sqlite3.connect('history.db') # Create a new SQLite database
+cHistory = connHistory.cursor()
 
-# Create a new table named 'images'
-c.execute("DROP TABLE images")
-c.execute('''CREATE TABLE images (id INTEGER PRIMARY KEY, timestamp TEXT, text TEXT, path TEXT)''')
 
-conn.commit()
+cImages.execute("DROP TABLE images")
+cImages.execute('''CREATE TABLE images (id INTEGER PRIMARY KEY, timestamp TEXT, text TEXT, path TEXT)''')
 
-conn.close()
 
+connImages.commit()
+connImages.close()
 
 socketio = SocketIO(app)
 
@@ -38,6 +39,14 @@ def home():
     images = c.execute('SELECT * FROM images ORDER BY id DESC').fetchall()
     conn.close()
     return render_template('home.html', images=images)
+
+@app.route('/history', methods=['GET'])
+def history():
+    conn = sqlite3.connect('history.db')
+    c = conn.cursor()
+    history = c.execute('SELECT * FROM history ORDER BY id DESC').fetchall()
+    conn.close()
+    return render_template('history.html', history=history)
 
 
 @app.route('/image/<path>')
@@ -57,12 +66,18 @@ def receive_data(conn):
         path = f"{data}.JPG"
         text = "Good face ! Go ahead."
     timestamp = datetime.datetime.now().strftime("%H:%M:%S")
-    conn = sqlite3.connect('images.db')
-    c = conn.cursor()
-    c.execute("INSERT INTO images VALUES (NULL, ?, ?, ?)", (timestamp, text, path))
-    conn.commit()
-    print(c.execute('SELECT * FROM images ORDER BY id DESC').fetchall())
-    c.close()
+    
+    connImages = sqlite3.connect('images.db')
+    cImages = connImages.cursor()
+    cImages.execute("INSERT INTO images VALUES (NULL, ?, ?, ?)", (timestamp, text, path))
+    connImages.commit()
+    connImages.close()
+
+    connHistory = sqlite3.connect('history.db')
+    cHistory = connHistory.cursor()
+    formatted_date = datetime.datetime.now().strftime("%d/%m/%Y")
+    cHistory.execute("INSERT INTO history VALUES (NULL, ?, ?, ?, ?)", (formatted_date, timestamp, text, path))
+    
     socketio.emit('reload', {'message': 'New content added'})
 
 

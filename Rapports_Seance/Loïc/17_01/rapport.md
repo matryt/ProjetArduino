@@ -5,6 +5,6 @@
 	Ajout d'un jumper sur le pont en H pour passer l'entrée +5V de la partie commande à sortie +5V pour alimenter la carte arduino 
 		pour donc garder seulement l'alimentation du pont en H 
 - Montage avec l'alimentation du labo pour mesure du courant consommé : 
-  pour la carte MaixDuino dans un premier temps
-  pour les deux moteurs + servo-moteur + pont en H + carte arduino dans un deuxième temps
--->  consomation totat d'environ 650 mA  ( 400 mA (MaixDuino) + 250 mA (seconde carte ))
+	- pour la carte MaixDuino dans un premier temps
+	- pour les deux moteurs + servo-moteur + pont en H + carte arduino dans un deuxième temps
+-->  consomation total d'environ 650 mA  ( 400 mA (MaixDuino) + 250 mA (seconde carte ))

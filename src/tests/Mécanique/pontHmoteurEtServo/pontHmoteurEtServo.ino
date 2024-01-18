@@ -39,6 +39,13 @@ void setup() {
 // Boucle principale : LOOP //
 //**************************//
 void loop() {
+  digitalWrite(borneIN1,HIGH);
+  digitalWrite(borneIN2,LOW);
+  digitalWrite(borneENA,HIGH);
+  digitalWrite(borneIN3,HIGH);
+  digitalWrite(borneIN4,LOW);
+  digitalWrite(borneENB,HIGH);
+  delay(100);
   for (int i = 0; i <= 180; i++) {
     monServo.write(i);
     delay(15);
@@ -47,12 +54,6 @@ void loop() {
     monServo.write(i);
     delay(15);
   }
-  digitalWrite(borneIN1,HIGH);
-  digitalWrite(borneIN2,LOW);
-  digitalWrite(borneENA,HIGH);
-  digitalWrite(borneIN3,HIGH);
-  digitalWrite(borneIN4,LOW);
-  digitalWrite(borneENB,HIGH);
   delay(2000);
   digitalWrite(borneENB,LOW);
   digitalWrite(borneENA,LOW);

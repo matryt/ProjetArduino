@@ -1,14 +1,7 @@
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, request
 import threading
 import socket
-import datetime
-import base64
-from PIL import Image
-import os
-from random import choice, randint
 from flask_socketio import SocketIO
-import time
-import redis
 import sqlite3
 import datetime
 
@@ -16,21 +9,19 @@ app = Flask(__name__)
 images = []
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-
-connImages = sqlite3.connect('images.db') # Create a new SQLite database
+connImages = sqlite3.connect('images.db')  # Create a new SQLite database
 cImages = connImages.cursor()
-connHistory = sqlite3.connect('history.db') # Create a new SQLite database
+connHistory = sqlite3.connect('history.db')  # Create a new SQLite database
 cHistory = connHistory.cursor()
-
 
 cImages.execute("DROP TABLE images")
 cImages.execute('''CREATE TABLE images (id INTEGER PRIMARY KEY, timestamp TEXT, text TEXT, path TEXT)''')
-
 
 connImages.commit()
 connImages.close()
 
 socketio = SocketIO(app)
+
 
 @app.route('/', methods=['GET'])
 def home():
@@ -40,6 +31,7 @@ def home():
     conn.close()
     return render_template('home.html', images=images)
 
+
 @app.route('/history', methods=['GET'])
 def history():
     conn = sqlite3.connect('history.db')
@@ -48,11 +40,21 @@ def history():
     conn.close()
     return render_template('history.html', history=history)
 
+@app.route('/manage', methods=['GET'])
+def manage():
+    return render_template('manage.html')
+
 
 @app.route('/image/<path>')
 def serve_image(path):
     print(path)
-    return send_from_directory('static', path)
+    return send_from_directory('static/images', path)
+
+
+@app.route("/manage_form", methods=["POST"])
+def manage_form():
+    data = request.form
+    return data
 
 
 def receive_data(conn):
@@ -66,7 +68,7 @@ def receive_data(conn):
         path = f"{data}.JPG"
         text = "Good face ! Go ahead."
     timestamp = datetime.datetime.now().strftime("%H:%M:%S")
-    
+
     connImages = sqlite3.connect('images.db')
     cImages = connImages.cursor()
     cImages.execute("INSERT INTO images VALUES (NULL, ?, ?, ?)", (timestamp, text, path))
@@ -77,7 +79,7 @@ def receive_data(conn):
     cHistory = connHistory.cursor()
     formatted_date = datetime.datetime.now().strftime("%d/%m/%Y")
     cHistory.execute("INSERT INTO history VALUES (NULL, ?, ?, ?, ?)", (formatted_date, timestamp, text, path))
-    
+
     socketio.emit('reload', {'message': 'New content added'})
 
 
@@ -91,22 +93,6 @@ def start_receiving_images():
             print('Connected by', addr)
             threading.Thread(target=receive_data, args=(conn,)).start()
 
-
-def random_content():
-   global images
-   images = ["unknown.png"] + [f"{i}.JPG" for i in range(1, 3)]
-   image_filename = choice(images)
-   texts = ["Good face ! Go ahead.", "Incorrect face. Danger !"]
-   text = choice(texts)
-   timestamp = datetime.datetime.now().strftime("%H:%M:%S")
-   images = [{"image" : image_filename, "text" : text, "timestamp" : timestamp}] + images
-
-def generate_random():
-   for i in range(5):
-      time.sleep(1)
-      random_content()
-      #socketio.emit('reload', {'message': 'New content added'})
-      print("Content added")
 
 if __name__ == "__main__":
     threading.Thread(target=start_receiving_images).start()

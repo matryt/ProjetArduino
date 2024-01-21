@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>History of MaixDuino detections</title>
+ <link rel="stylesheet" href="{{ url_for('static', filename='styles/manage.css') }}">
+ <link rel="stylesheet" href="{{ url_for('static', filename='styles/common.css') }}">
+ <script async defer src="{{url_for('static', filename='scripts/manageForm.js') }}"></script> 
+</head>
+<body>
+    <h1>Gérer les données - MaixDuino</h1>
+    <form action="{{url_for('manage_form')}}" method="post">
+        <div class="manage-type">
+            <h2>Alertes</h2>
+            <div class="entry-line">
+                <label for="delete-alerts" class="form-label">Pour supprimer une ou plusieurs alertes, entrez le numéro ou les numéros à supprimer (ex. : 9 ou 7-12) :</label>
+                <input type="text" name="alerts-number" class="form-control" id="delete-alerts">
+            </div>
+            <div class="entry-line">
+                <label for="delete-all-alerts" class="form-label">Cocher cette case pour supprimer toutes les alertes</label>
+                <input type="checkbox" name="alerts-number" class="form-control" id="delete-all-alerts">
+            </div>
+        </div>
+        <div class="manage-type">
+            <h2>Historique</h2>
+            <div class="entry-line">
+                <label for="delete-history" class="form-label">Pour supprimer une ou plusieurs alertes de l'historique, entrez le numéro ou les numéros à supprimer (ex. : 9 ou 7-12) :</label>
+                <input type="text" name="alerts-number" class="form-control" id="delete-history">
+            </div>
+            <div class="entry-line">
+                <label for="delete-all-history" class="form-label">Cocher cette case pour supprimer toutes les alertes de l'historique</label>
+                <input type="checkbox" name="alerts-number" class="form-control" id="delete-all-history">
+            </div>
+        </div>
+        <button type="submit">Enregistrer les modifications</button>
+    </form>
+
+</body>
+</html>

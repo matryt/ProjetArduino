@@ -2,26 +2,29 @@
 <html>
 <head>
  <title>History of MaixDuino detections</title>
- <link rel="stylesheet" href="{{ url_for('static', filename='history.css') }}">
+ <link rel="stylesheet" href="{{ url_for('static', filename='styles/manage.css') }}">
+ <link rel="stylesheet" href="{{ url_for('static', filename='styles/common.css') }}">
 </head>
 <body>
+
     <h1>Historique de détection - MaixDuino</h1>
     <table>
-    <tr>
-    	<th scope="col">ID</th>
-    	<th scope="col">Date</th>
-    	<th scope="col">Heure</th>
-    	<th scope="col">Message</th>
-    	<th scope="col">Image</th>
-    </tr>
-    {% for line in history %}
-     <tr>line[0]</tr>
-     <tr>line[1]</tr>
-     <tr>line[2]</tr>
-     <tr>line[3]</tr>
-     <tr><img src="{{ url_for('serve_image', path=image[4]) }}" alt="Image"></tr>
-    {% endfor %}
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Date</th>
+            <th scope="col">Heure</th>
+            <th scope="col">Message</th>
+            <th scope="col">Image</th>
+        </tr>
+        {% for line in history %}
+         <tr>
+             <td>{{line[0]}}</td>
+             <td>{{line[1]}}</td>
+             <td>{{line[2]}}</td>
+             <td>{{line[3]}}</td>
+             <td><img src="{{ url_for('serve_image', path=line[4]) }}" alt="Image"></td>
+         </tr>
+        {% endfor %}
     </table>
-
-</body>
+   </body>
 </html>

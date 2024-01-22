@@ -47,7 +47,6 @@ def manage():
 
 @app.route('/image/<path>')
 def serve_image(path):
-    print(path)
     return send_from_directory('static/images', path)
 
 
@@ -84,40 +83,57 @@ def suppress_all_history():
     connHistory.close()
 
 def receive_data(conn):
-    global path
-    data = conn.recv(1024)
-    data = data.decode("utf-8")
-    if data == "U":
-        path = "unknown.png"
-        text = "Unknown face. Danger !"
-    else:
-        path = f"{data}.JPG"
-        text = "Good face ! Go ahead."
-    timestamp = datetime.datetime.now().strftime("%H:%M:%S")
+    data = ''
+    while True:
+        try:
+            chunk = conn.recv(1024)
+            if not chunk:
+                break
+            data += chunk.decode("utf-8")
+            lines = data.split('\n')
+            for line in lines[:-1]:
+                # Process each line
+                global path
+                if line == "U":
+                    path = "unknown.png"
+                    text = "Unknown face. Danger !"
+                else:
+                    path = f"{line}.JPG"
+                    text = "Good face ! Go ahead."
+                timestamp = datetime.datetime.now().strftime("%H:%M:%S")
 
-    connImages = sqlite3.connect('images.db')
-    cImages = connImages.cursor()
-    cImages.execute("INSERT INTO images VALUES (NULL, ?, ?, ?)", (timestamp, text, path))
-    connImages.commit()
-    connImages.close()
+                connImages = sqlite3.connect('images.db')
+                cImages = connImages.cursor()
+                cImages.execute("INSERT INTO images VALUES (NULL, ?, ?, ?)", (timestamp, text, path))
+                connImages.commit()
+                connImages.close()
 
-    connHistory = sqlite3.connect('history.db')
-    cHistory = connHistory.cursor()
-    formatted_date = datetime.datetime.now().strftime("%d/%m/%Y")
-    cHistory.execute("INSERT INTO history VALUES (NULL, ?, ?, ?, ?)", (formatted_date, timestamp, text, path))
+                connHistory = sqlite3.connect('history.db')
+                cHistory = connHistory.cursor()
+                formatted_date = datetime.datetime.now().strftime("%d/%m/%Y")
+                cHistory.execute("INSERT INTO history VALUES (NULL, ?, ?, ?, ?)", (formatted_date, timestamp, text, path))
 
-    socketio.emit('reload', {'message': 'New content added'})
+                socketio.emit('reload', {'message': 'New content added'})
+                print("Content added !")
+                connHistory.commit()
+                connHistory.close()
+            data = lines[-1] # Keep the remaining data
+        except Exception as e:
+            print(f"Error: {e}")
+            break
+
 
 
 def start_receiving_images():
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        s.bind(('0.0.0.0', 5000))
-        s.listen()
-        while True:
-            conn, addr = s.accept()
-            print('Connected by', addr)
-            threading.Thread(target=receive_data, args=(conn,)).start()
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    s.bind(('0.0.0.0', 5000))
+    s.listen()
+    while True:
+        conn, addr = s.accept()
+        print('Connected by', addr)
+        threading.Thread(target=receive_data, args=(conn,)).start()
+    s.close()
 
 
 if __name__ == "__main__":

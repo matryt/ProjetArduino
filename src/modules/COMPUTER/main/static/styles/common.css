@@ -46,6 +46,7 @@ nav li {
 nav {
     height: 40px;
     margin-bottom:10px;
+    position:absolute;
 }
 
 #menu-container {

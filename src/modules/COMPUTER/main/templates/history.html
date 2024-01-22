@@ -2,11 +2,20 @@
 <html>
 <head>
  <title>History of MaixDuino detections</title>
- <link rel="stylesheet" href="{{ url_for('static', filename='styles/manage.css') }}">
+ <link rel="stylesheet" href="{{ url_for('static', filename='styles/history.css') }}">
  <link rel="stylesheet" href="{{ url_for('static', filename='styles/common.css') }}">
 </head>
 <body>
-
+    <nav>
+        <div id="menu-container">
+                    <img src="{{ url_for('static', filename='images/menu.svg') }}" height="30px" alt="menu"></img>
+                    <ul>
+                        <a href="/"><li>Alertes</li></a>
+                        <a href="/history"><li>Historique</li></a>
+                        <a href="/manage"><li>Gérer l'historique</li></a>
+                    </ul>
+        </div>
+    </nav>
     <h1>Historique de détection - MaixDuino</h1>
     <table>
         <tr>

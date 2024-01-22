@@ -7,6 +7,17 @@
  <link rel="stylesheet" href="{{ url_for('static', filename='styles/common.css') }}">
 </head>
 <body>
+    <nav>
+        <div id="menu-container">
+                    <img src="{{ url_for('static', filename='images/menu.svg') }}" height="30px" alt="menu"></img>
+                    <ul>
+                        <a href="/"><li>Alertes</li></a>
+                        <a href="/history"><li>Historique</li></a>
+                        <a href="/manage"><li>Gérer l'historique</li></a>
+                    </ul>
+        </div>
+    </nav>
+
     <h1>Alertes de présence - MaixDuino</h1>
     <div id="all">
         {% for image in images %}

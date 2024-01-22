@@ -7,28 +7,27 @@
  <script async defer src="{{url_for('static', filename='scripts/manageForm.js') }}"></script> 
 </head>
 <body>
+    <nav>
+        <div id="menu-container">
+                    <img src="{{ url_for('static', filename='images/menu.svg') }}" height="30px" alt="menu"></img>
+                    <ul>
+                        <a href="/"><li>Alertes</li></a>
+                        <a href="/history"><li>Historique</li></a>
+                        <a href="/manage"><li>Gérer l'historique</li></a>
+                    </ul>
+        </div>
+    </nav>
     <h1>Gérer les données - MaixDuino</h1>
     <form action="{{url_for('manage_form')}}" method="post">
-        <div class="manage-type">
-            <h2>Alertes</h2>
-            <div class="entry-line">
-                <label for="delete-alerts" class="form-label">Pour supprimer une ou plusieurs alertes, entrez le numéro ou les numéros à supprimer (ex. : 9 ou 7-12) :</label>
-                <input type="text" name="alerts-number" class="form-control" id="delete-alerts">
-            </div>
-            <div class="entry-line">
-                <label for="delete-all-alerts" class="form-label">Cocher cette case pour supprimer toutes les alertes</label>
-                <input type="checkbox" name="alerts-number" class="form-control" id="delete-all-alerts">
-            </div>
-        </div>
         <div class="manage-type">
             <h2>Historique</h2>
             <div class="entry-line">
                 <label for="delete-history" class="form-label">Pour supprimer une ou plusieurs alertes de l'historique, entrez le numéro ou les numéros à supprimer (ex. : 9 ou 7-12) :</label>
-                <input type="text" name="alerts-number" class="form-control" id="delete-history">
+                <input type="text" name="history-number" class="form-control" id="delete-history">
             </div>
             <div class="entry-line">
                 <label for="delete-all-history" class="form-label">Cocher cette case pour supprimer toutes les alertes de l'historique</label>
-                <input type="checkbox" name="alerts-number" class="form-control" id="delete-all-history">
+                <input type="checkbox" name="history-all" class="form-control" id="delete-all-history">
             </div>
         </div>
         <button type="submit">Enregistrer les modifications</button>

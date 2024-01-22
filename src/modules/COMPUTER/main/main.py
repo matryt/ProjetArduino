@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_from_directory, request
+from flask import Flask, render_template, send_from_directory, request, redirect, url_for
 import threading
 import socket
 from flask_socketio import SocketIO
@@ -54,8 +54,34 @@ def serve_image(path):
 @app.route("/manage_form", methods=["POST"])
 def manage_form():
     data = request.form
-    return data
+    process_data(data)
+    return redirect(url_for("history"))
 
+def process_data(d):
+    for c, v in d.items():
+        if c == "history-all":
+            suppress_all_history()
+        elif c == "history-number":
+            if "-" in v:
+                l = v.split("-")
+            else:
+                l = [int(v) for i in range(2)]
+            suppress_history_alerts(*l)
+
+
+def suppress_history_alerts(start, end):
+    connHistory = sqlite3.connect('history.db')
+    cHistory = connHistory.cursor()
+    cHistory.execute(f"DELETE FROM history WHERE id >={start} AND id<={end} ")
+    connHistory.commit()
+    connHistory.close()
+
+def suppress_all_history():
+    connHistory = sqlite3.connect('history.db')
+    cHistory = connHistory.cursor()
+    cHistory.execute("DELETE FROM history")
+    connHistory.commit()
+    connHistory.close()
 
 def receive_data(conn):
     global path

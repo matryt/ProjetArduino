@@ -167,6 +167,7 @@ def send_image_via_socket(gateway, name):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((gateway, 5000))
         s.send(name)
+        print("Sent !")
     except Exception as e:
         raise e
     finally:

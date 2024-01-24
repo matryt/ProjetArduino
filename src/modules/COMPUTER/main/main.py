@@ -20,16 +20,17 @@ cImages.execute('''CREATE TABLE images (id INTEGER PRIMARY KEY, timestamp TEXT, 
 connImages.commit()
 connImages.close()
 
-socketio = SocketIO(app)
+socketio = SocketIO(app,cors_allowed_origins="*")
 
 
 @app.route('/', methods=['GET'])
 def home():
+    socketio.emit("reload")
     conn = sqlite3.connect('images.db')
     c = conn.cursor()
     images = c.execute('SELECT * FROM images ORDER BY id DESC').fetchall()
     conn.close()
-    return render_template('home.html', images=images)
+    return render_template('home.html', images=images, async_mode=socketio.async_mode)
 
 
 @app.route('/history', methods=['GET'])
@@ -83,61 +84,55 @@ def suppress_all_history():
     connHistory.close()
 
 def receive_data(conn):
-    data = ''
-    while True:
-        try:
-            chunk = conn.recv(1024)
-            if not chunk:
-                break
-            data += chunk.decode("utf-8")
-            lines = data.split('\n')
-            for line in lines[:-1]:
-                # Process each line
-                global path
-                if line == "U":
-                    path = "unknown.png"
-                    text = "Unknown face. Danger !"
-                else:
-                    path = f"{line}.JPG"
-                    text = "Good face ! Go ahead."
-                timestamp = datetime.datetime.now().strftime("%H:%M:%S")
+    global path
+    data = conn.recv(1024)
+    data = data.decode("utf-8")
+    if data == "U":
+        path = "unknown.png"
+        text = "Unknown face. Danger !"
+    else:
+        path = f"{data}.JPG"
+        text = "Good face ! Go ahead."
+    timestamp = datetime.datetime.now().strftime("%H:%M:%S")
 
-                connImages = sqlite3.connect('images.db')
-                cImages = connImages.cursor()
-                cImages.execute("INSERT INTO images VALUES (NULL, ?, ?, ?)", (timestamp, text, path))
-                connImages.commit()
-                connImages.close()
+    connImages = sqlite3.connect('images.db')
+    cImages = connImages.cursor()
+    cImages.execute("INSERT INTO images VALUES (NULL, ?, ?, ?)", (timestamp, text, path))
+    connImages.commit()
+    connImages.close()
 
-                connHistory = sqlite3.connect('history.db')
-                cHistory = connHistory.cursor()
-                formatted_date = datetime.datetime.now().strftime("%d/%m/%Y")
-                cHistory.execute("INSERT INTO history VALUES (NULL, ?, ?, ?, ?)", (formatted_date, timestamp, text, path))
+    connHistory = sqlite3.connect('history.db')
+    cHistory = connHistory.cursor()
+    formatted_date = datetime.datetime.now().strftime("%d/%m/%Y")
+    cHistory.execute("INSERT INTO history VALUES (NULL, ?, ?, ?, ?)", (formatted_date, timestamp, text, path))
 
-                socketio.emit('reload', {'message': 'New content added'})
-                print("Content added !")
-                connHistory.commit()
-                connHistory.close()
-            data = lines[-1] # Keep the remaining data
-        except Exception as e:
-            print(f"Error: {e}")
-            break
+    socketio.emit('reload', {'message': 'New content added'})
+    print("Content added !")
+    clean_image_database()
+    connHistory.commit()
+    connHistory.close()
 
-
+def clean_image_database():
+    conn = sqlite3.connect('images.db')
+    c = conn.cursor()
+    length = len(c.execute("SELECT * FROM images").fetchall())
+    if length <= 5:
+        return
+    c.execute("DELETE FROM images WHERE id NOT IN (SELECT id FROM images ORDER BY id DESC LIMIT 5)")
+    conn.commit()
+    conn.close()
 
 def start_receiving_images():
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind(('0.0.0.0', 5000))
-    s.listen()
-    while True:
-        conn, addr = s.accept()
-        print('Connected by', addr)
-        threading.Thread(target=receive_data, args=(conn,)).start()
-    s.close()
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.bind(('0.0.0.0', 5000))
+        s.listen()
+        while True:
+            conn, addr = s.accept()
+            print('Connected by', addr)
+            threading.Thread(target=receive_data, args=(conn,)).start()
 
 
 if __name__ == "__main__":
     threading.Thread(target=start_receiving_images).start()
-    """threading.Thread(target=generate_random).start()
-    random_content()"""
     app.run(host='localhost', port=5005, debug=True)

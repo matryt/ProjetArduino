@@ -5,7 +5,7 @@
 # Pendant la séance : 
 - Pièce de fixation du servo moteur sur la structure 
 	- Prise de mesure du servomoteur et modélisation sur Onshape avec perçage pour la fixation avec des vis sur la structure
-		![Texte alternatif](fixationservomoteur.jpeg "Le titre de mon image") 
+		![Texte alternatif](fixationservomoteur.jpeg.png "Le titre de mon image") 
 	- Impression 3D au FabLab 
 	- Test de la pièce 3D de fixation sur le servo moteur et la structure => OK (2)
 - Réflexion pour la fixation de la plaque en plexiglass servant de support pour fixer le servomoteur à la carte MaixDuino (1)

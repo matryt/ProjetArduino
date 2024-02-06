@@ -17,4 +17,4 @@
 - Modélisation et impression d'une pièce en plastique pour tenir les moteurs ensemble et les fixer sous la structure
 ![Modélisation](img/piece_moteurs_onshape.png)
 ![Résultat](img/piece_moteurs.jpg)
-- Résolution d'un problème inopiné d'envoi de données WiFi entre la carte MaixDuino et l'ordinateur
+- Résolution d'un problème inopiné d'envoi de données WiFi entre la carte MaixDuino et l'ordinateur 

@@ -14,4 +14,4 @@
 # Prochaine Séance : 
 - (1) => perçage de la plaque en plexiglass au centre pour la vissé à l'attache du servomoteur
 - (2) => perçage de plaque supérieur de la structure pour pouvoir visser la fixation du servomoteur  
-- (2) =>  colle/glue entre  la struture de la carte MaixDuino et la plaque en plexiglass
+- (2) =>  colle/glue entre  la struture de la carte MaixDuino et la plaque en plexiglass 

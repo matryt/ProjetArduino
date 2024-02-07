@@ -12,7 +12,7 @@ struct PINS {
     int IN2 = 7;
     int IN3 = 8;
     int IN4 = 9;
-    int ULTRASONS = 0;
+    int INFRARED = 0;
     int SERVO = 13;
 };
 

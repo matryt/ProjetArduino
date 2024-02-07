@@ -1,15 +1,15 @@
-#include "modules/ESP32/LiveStream.cpp"
+#include "modules/ARDUINO/Capteur/Ultrasons.h"
 
-LiveStream live;
-Hotspot hotspot;
+Ultrasons capteur;
 
 void setup() {
   // put your setup code here, to run once:
-  live.init();
-  live.main();
+  capteur.init()
+  Serial.begin(9600);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+  Serial.println(capteur.mesure());
+  delay(150);
 }

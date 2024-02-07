@@ -12,6 +12,8 @@ struct PINS {
     int IN2 = 8;
     int IN3 = 7;
     int IN4 = 6;
+    int ULTRASONS = 0;
+    int SERVO = 13;
 };
 
 struct DIRECTION {
@@ -20,9 +22,12 @@ struct DIRECTION {
 };
 
 struct MOTEUR {
-    int VITESSE_MIN = 60;
+    int VITESSE_MIN = 65;
     int VITESSE_MAX = 255;
+    int VITESSE_DEMI_TOUR = 100;
     int DELAI_VARIATION_VITESSE = 20;
+    int DELAI_DEMI_TOUR = 1000;
+    int DELAI_LINEAIRE = 500;
 };
 
 struct SIDES {

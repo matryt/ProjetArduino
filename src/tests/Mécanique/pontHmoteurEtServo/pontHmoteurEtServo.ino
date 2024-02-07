@@ -1,9 +1,9 @@
-#define borneENA        10      // On associe la borne "ENA" du L298N à la pin D10 de l'Arduino (PWM possible sur cette broche)
-#define borneIN1        9       // On associe la borne "IN1" du L298N à la pin D9 de l'Arduino
-#define borneIN2        8       // On associe la borne "IN2" du L298N à la pin D8 de l'Arduino
-#define borneIN3        7       // On associe la borne "IN3" du L298N à la pin D7 de l'Arduino
-#define borneIN4        6       // On associe la borne "IN4" du L298N à la pin D6 de l'Arduino
-#define borneENB        3       // On associe la borne "ENB" du L298N à la pin D5 de l'Arduino (PWM possible sur cette broche)
+#define borneENA        3      // On associe la borne "ENA" du L298N à la pin D10 de l'Arduino (PWM possible sur cette broche)
+#define borneIN1        6       // On associe la borne "IN1" du L298N à la pin D9 de l'Arduino
+#define borneIN2        7       // On associe la borne "IN2" du L298N à la pin D8 de l'Arduino
+#define borneIN3        8       // On associe la borne "IN3" du L298N à la pin D7 de l'Arduino
+#define borneIN4        9       // On associe la borne "IN4" du L298N à la pin D6 de l'Arduino
+#define borneENB        10       // On associe la borne "ENB" du L298N à la pin D5 de l'Arduino (PWM possible sur cette broche)
 
 //*************************//
 // Constantes du programme //

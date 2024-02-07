@@ -12,7 +12,7 @@ struct PINS {
     int IN2 = 8;
     int IN3 = 7;
     int IN4 = 6;
-    int ULTRASONS = 0;
+    int INFRARED = 0;
     int SERVO = 13;
 };
 
@@ -28,11 +28,18 @@ struct MOTEUR {
     int DELAI_VARIATION_VITESSE = 20;
     int DELAI_DEMI_TOUR = 1000;
     int DELAI_LINEAIRE = 500;
+    int INCREMENT = 10;
 };
 
 struct SIDES {
     char GAUCHE = "L";
     char DROITE = "R";
+};
+
+struct SERVO {
+    int INCREMENT = 5;
+    int MIN_ANGLE = 15;
+    int MAX_ANGLE = 90;
 };
 
 #endif //PROJET_CONSTANTS_H

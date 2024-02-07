@@ -1,11 +1,14 @@
-#include "modules/ARDUINO/Capteur/Ultrasons.h"
+#include "modules/ARDUINO/Capteur/Infrared.h"
+#include "modules/ARDUINO/Robot/Robot.h"
 
-Ultrasons capteur;
+Infrared capteur;
+Robot robot;
 
 void setup() {
   // put your setup code here, to run once:
   capteur.init()
   Serial.begin(9600);
+  Robot.main();
 }
 
 void loop() {

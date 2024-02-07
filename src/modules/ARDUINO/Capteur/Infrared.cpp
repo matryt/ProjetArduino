@@ -2,12 +2,12 @@
 // Created by mathi on 07/02/2024.
 //
 
-#include "Ultrasons.h"
+#include "Infrared.h"
 #include "../constants.h"
 
-class Ultrasons {
+class Infrared {
     void init() {
-        pinMode(PINS::ULTRASONS, INPUT);
+        pinMode(PINS::INFRARED, INPUT);
     }
 
     int distanceBrute() {

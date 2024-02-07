@@ -6,7 +6,7 @@
 #define PROJET_ULTRASONS_H
 
 
-class Ultrasons {
+class Infrared {
 
     void init();
     int distanceBrute();

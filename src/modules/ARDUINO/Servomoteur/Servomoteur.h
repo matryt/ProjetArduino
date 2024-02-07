@@ -6,8 +6,9 @@
 #define PROJET_SERVOMOTEUR_H
 
 
-class servomoteur {
-
+class Servomoteur {
+    void init();
+    void write_angle(int angle);
 };
 
 

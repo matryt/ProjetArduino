@@ -30,20 +30,10 @@ class Moteur {
         config_speed(0);
     }
 
-    void speed_up(int speed, int target_speed, int increment) {
-        while (speed < target_speed) {
-            speed += increment;
-            config_speed(speed);
-            delay(MOTEUR::DELAI_VARIATION_VITESSE);
-        }
-    }
-
-    void slow_down(int speed, int target_speed, int increment) {
-        while (speed > target_speed) {
-            speed -= increment;
-            config_speed(speed);
-            delay(MOTEUR::DELAI_VARIATION_VITESSE);
-        }
+    void config_spinning(char direction) {
+        bool isForward = (direction == DIRECTION::AVANT);
+        digitalWrite(in1, isForward);
+        digitalWrite(in3, not isForward);
     }
 }
 

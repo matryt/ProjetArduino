@@ -6,12 +6,12 @@
 #define PROJET_CONSTANTS_H
 
 struct PINS {
-    int ENA = 10;
-    int ENB = 3;
-    int IN1 = 9;
-    int IN2 = 8;
-    int IN3 = 7;
-    int IN4 = 6;
+    int ENA = 3;
+    int ENB = 10;
+    int IN1 = 6;
+    int IN2 = 7;
+    int IN3 = 8;
+    int IN4 = 9;
     int ULTRASONS = 0;
     int SERVO = 13;
 };

@@ -1,45 +1,42 @@
-//
-// Created by mathi on 07/02/2024.
-//
-
+// constants.h
 #ifndef PROJET_CONSTANTS_H
 #define PROJET_CONSTANTS_H
 
-struct PINS {
-    int ENA = 3;
-    int ENB = 10;
-    int IN1 = 6;
-    int IN2 = 7;
-    int IN3 = 8;
-    int IN4 = 9;
-    int INFRARED = 0;
-    int SERVO = 13;
-};
+namespace PINS {
+    const int ENA =  3;
+    const int ENB =  10;
+    const int IN1 =  6;
+    const int IN2 =  7;
+    const int IN3 =  8;
+    const int IN4 =  9;
+    const int INFRARED =  0;
+    const int SERVO =  13;
+}
 
-struct DIRECTION {
-    char AVANT = "V";
-    char ARRIERE = "R",
-};
+namespace DIRECTION {
+    const char AVANT = 'V';
+    const char ARRIERE = 'R';
+}
 
-struct MOTEUR {
-    int VITESSE_MIN = 65;
-    int VITESSE_MAX = 255;
-    int VITESSE_DEMI_TOUR = 100;
-    int DELAI_VARIATION_VITESSE = 20;
-    int DELAI_DEMI_TOUR = 1000;
-    int DELAI_LINEAIRE = 500;
-    int INCREMENT = 10;
-};
+namespace MOTEUR {
+    const int VITESSE_MIN =  65;
+    const int VITESSE_MAX =  255;
+    const int VITESSE_DEMI_TOUR =  100;
+    const int DELAI_VARIATION_VITESSE =  20;
+    const int DELAI_DEMI_TOUR =  1000;
+    const int DELAI_LINEAIRE =  500;
+    const int INCREMENT =  10;
+}
 
-struct SIDES {
-    char GAUCHE = "L";
-    char DROITE = "R";
-};
+namespace SIDES {
+    const char GAUCHE = 'L';
+    const char DROITE = 'R';
+}
 
-struct SERVO {
-    int INCREMENT = 5;
-    int MIN_ANGLE = 15;
-    int MAX_ANGLE = 90;
-};
+namespace SERVO {
+    const int INCREMENT =  5;
+    const int MIN_ANGLE =  15;
+    const int MAX_ANGLE =  90;
+}
 
 #endif //PROJET_CONSTANTS_H

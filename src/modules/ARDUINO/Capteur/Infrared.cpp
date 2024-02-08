@@ -1,26 +1,22 @@
-//
-// Created by mathi on 07/02/2024.
-//
-
+// Infrared.cpp
+#include <Arduino.h>
 #include "Infrared.h"
 #include "../constants.h"
 
-class Infrared {
-    void init() {
-        pinMode(PINS::INFRARED, INPUT);
-    }
+int Infrared::distanceBrute() {
+    return analogRead(PINS::INFRARED);
+}
 
-    int distanceBrute() {
-        return analogRead(PINS::ULTRASONS);
-    }
+int Infrared::convertirDistance(int raw) {
+    float Vout = float(raw) *  0.0048828125;
+    int phys =  13 * pow(Vout, -1);
+    return phys;
+}
 
-    int convertirDistance(int raw) {
-        float Vout = float(raw) * 0.0048828125;
-        int phys = 13 * pow(Vout, -1);
-        return phys;
-    }
+void Infrared::init() {
+    pinMode(PINS::INFRARED, INPUT);
+}
 
-    int mesure() {
-        return convertirDistance(distanceBrute);
-    }
-};
+int Infrared::mesure() {
+    return convertirDistance(distanceBrute());
+}

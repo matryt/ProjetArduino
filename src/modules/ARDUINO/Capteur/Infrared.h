@@ -1,19 +1,18 @@
-//
-// Created by mathi on 07/02/2024.
-//
-
+// Infrared.h
 #ifndef PROJET_ULTRASONS_H
 #define PROJET_ULTRASONS_H
 
+#include <Arduino.h>
+#include "../constants.h"
 
 class Infrared {
-
+public:
     void init();
-    int distanceBrute();
-    int convertirDistance(int raw);
     int mesure();
 
+private:
+    int distanceBrute();
+    int convertirDistance(int raw);
 };
 
-
-#endif //PROJET_ULTRASONS_H
+#endif // PROJET_ULTRASONS_H

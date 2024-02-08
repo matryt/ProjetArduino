@@ -1,5 +1,6 @@
-#include "modules/ARDUINO/Capteur/Infrared.h"
-#include "modules/ARDUINO/Robot/Robot.h"
+#include "src/modules/ARDUINO/Capteur/Infrared.h"
+#include <Arduino.h>
+//#include "src/modules/ARDUINO/Robot/Robot.h"
 
 Infrared capteur;
 //Robot robot;

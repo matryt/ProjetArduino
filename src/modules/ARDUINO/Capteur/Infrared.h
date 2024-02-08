@@ -5,14 +5,14 @@
 #include <Arduino.h>
 #include "../constants.h"
 
+
+
 class Infrared {
 public:
     void init();
     int mesure();
-
-private:
-    int distanceBrute();
-    int convertirDistance(int raw);
+    float distanceBrute();
+    int convertirDistance(float raw);
 };
 
 #endif // PROJET_ULTRASONS_H

@@ -2,6 +2,8 @@
 #include <Arduino.h>
 //#include "src/modules/ARDUINO/Robot/Robot.h"
 
+float m;
+
 Infrared capteur;
 //Robot robot;
 
@@ -12,8 +14,22 @@ void setup() {
   //Robot.main();
 }
 
+float moyenne() {
+  float somme = 0;
+  for (int i = 0; i<30; i++) {
+    somme += capteur.distanceBrute();
+    delay(100);
+  }
+  return somme/30;
+}
+
 void loop() {
   // put your main code here, to run repeatedly:
-  Serial.println(capteur.mesure());
-  delay(150);
+  m = moyenne();
+  Serial.println(m);
+  Serial.println(capteur.convertirDistance(m));
+  while (!(Serial.available())) {
+    delay(100);
+  }
+  Serial.read();
 }

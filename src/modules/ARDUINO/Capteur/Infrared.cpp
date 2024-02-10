@@ -3,9 +3,6 @@
 #include "Infrared.h"
 #include "../constants.h"
 
-float sharpVoltage[] = { 3.1, 2.5, 1.84, 1.42, 1.15, 1, 0.85, 0.73, 0.5, 0.4, 0.3 };
-int sharpCms[] = { 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80 };
-
 float Infrared::distanceBrute() {
     return analogRead(PINS::INFRARED) / 1023.0 * 5.0;
 }

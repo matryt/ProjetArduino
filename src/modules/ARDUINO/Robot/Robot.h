@@ -14,7 +14,6 @@ class Robot {
     Moteur gauche;
     Moteur droite;
     Servomoteur s;
-    int angle;
 
 public:
     Robot();
@@ -29,7 +28,6 @@ public:
     void halfturn();
     void straight_line();
     void journey();
-    void process_next_angle();
     int main();
 };
 

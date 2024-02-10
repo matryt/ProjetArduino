@@ -10,8 +10,11 @@ class Servomoteur {
 public:
     void init();
     void write_angle(int angle);
+    void next();
 
 private:
+    int cpt;
+    int max;
     Servo servo;
 };
 

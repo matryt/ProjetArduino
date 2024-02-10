@@ -9,7 +9,7 @@
 #include "../constants.h"
 #include "../Servomoteur/Servomoteur.h"
 
-Robot::Robot() : angle(SERVO::MIN_ANGLE) {}
+Robot::Robot() : {}
 
 Robot::~Robot() {}
 
@@ -29,8 +29,7 @@ void Robot::speed_up(int speed, int target_speed, int increment) {
         speed += increment;
         config_speed(speed);
         delay(MOTEUR::DELAI_VARIATION_VITESSE);
-        process_next_angle();
-        s.write_angle(angle);
+        s.next();
     }
 }
 
@@ -39,8 +38,7 @@ void Robot::slow_down(int speed, int target_speed, int increment) {
         speed -= increment;
         config_speed(speed);
         delay(MOTEUR::DELAI_VARIATION_VITESSE);
-        process_next_angle();
-        s.write_angle(angle);
+        s.next();
     }
 }
 
@@ -63,20 +61,20 @@ void Robot::halfturn() {
     stop();
     config_spinning(DIRECTION::ARRIERE);
     start();
-    droite.config_speed(MOTEUR::VITESSE_MIN +  50);
+    droite.config_speed(MOTEUR::VITESSE_MIN + MOTEUR::DIFF_VITESSE_DEMITOUR);
     delay(MOTEUR::DELAI_DEMI_TOUR);
     stop();
     config_spinning(DIRECTION::AVANT);
+    s.next();
 }
 
 void Robot::straight_line() {
     config_spinning(DIRECTION::AVANT);
     start();
     speed_up(MOTEUR::VITESSE_MIN, MOTEUR::VITESSE_MAX, MOTEUR::INCREMENT);
-    while (capteur.mesure() >  79) {
+    while (capteur.mesure() > MOTEUR::DISTANCE_FREINAGE) {
         delay(MOTEUR::DELAI_LINEAIRE);
-        process_next_angle();
-        s.write_angle(angle);
+        s.next();
     }
     slow_down(MOTEUR::VITESSE_MAX, MOTEUR::VITESSE_MIN, MOTEUR::INCREMENT);
     stop();
@@ -88,16 +86,8 @@ void Robot::journey() {
     straight_line();
 }
 
-void Robot::process_next_angle() {
-    if (angle < SERVO::MAX_ANGLE) {
-        angle += SERVO::INCREMENT;
-    } else {
-        angle -= SERVO::INCREMENT;
-    }
-}
-
 int Robot::main() {
     journey();
-    return  0;
+    return 0;
 }
 

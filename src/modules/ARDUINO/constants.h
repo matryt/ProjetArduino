@@ -11,6 +11,7 @@ namespace PINS {
     const int IN4 =  9;
     const int INFRARED =  0;
     const int SERVO =  13;
+    const int BOUTON = 4;
 }
 
 namespace DIRECTION {
@@ -39,6 +40,11 @@ namespace SERVO {
     const int INCREMENT =  5;
     const int MIN_ANGLE =  15;
     const int MAX_ANGLE =  90;
+}
+
+namespace BOUTON {
+    const int TARGET_VALUE = 1;
+    const int DELAI_ATTENTE = 200;
 }
 
 #endif //PROJET_CONSTANTS_H

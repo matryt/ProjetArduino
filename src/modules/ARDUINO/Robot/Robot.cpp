@@ -9,10 +9,6 @@
 #include "../constants.h"
 #include "../Servomoteur/Servomoteur.h"
 
-Robot::Robot() : {}
-
-Robot::~Robot() {}
-
 void Robot::init() {
     capteur.init();
     gauche.init(PINS::ENA, PINS::IN1, PINS::IN2);
@@ -26,6 +22,7 @@ void Robot::config_speed(int speed) {
 
 void Robot::speed_up(int speed, int target_speed, int increment) {
     while (speed < target_speed) {
+        Serial.println(speed);
         speed += increment;
         config_speed(speed);
         delay(MOTEUR::DELAI_VARIATION_VITESSE);
@@ -69,10 +66,12 @@ void Robot::halfturn() {
 }
 
 void Robot::straight_line() {
+    Serial.println("Straight line");
     config_spinning(DIRECTION::AVANT);
     start();
     speed_up(MOTEUR::VITESSE_MIN, MOTEUR::VITESSE_MAX, MOTEUR::INCREMENT);
     while (capteur.mesure() > MOTEUR::DISTANCE_FREINAGE) {
+        Serial.println("Continue !");
         delay(MOTEUR::DELAI_LINEAIRE);
         s.next();
     }

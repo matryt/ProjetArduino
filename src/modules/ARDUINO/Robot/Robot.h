@@ -16,8 +16,6 @@ class Robot {
     Servomoteur s;
 
 public:
-    Robot();
-    ~Robot();
     void init();
     void config_speed(int speed);
     void speed_up(int speed, int target_speed, int increment);

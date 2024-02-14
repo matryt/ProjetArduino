@@ -1,4 +1,4 @@
-#include "modules/ARDUINO/Capteur/Infrared.h"
+#include "src/modules/ARDUINO/Capteur/Infrared.h"
 #include "modules/ARDUINO/Robot/Robot.h"
 #include "modules/ARDUINO/Bouton/Bouton.h"
 #include "modules/ARDUINO/constants.h"

@@ -4,7 +4,7 @@
 #include "modules/ARDUINO/constants.h"
 
 Infrared capteur;
-//Robot robot;
+Robot robot;
 Bouton bouton;
 
 void setup() {
@@ -13,11 +13,8 @@ void setup() {
   bouton.init(PINS::BOUTON);
   Serial.begin(9600);
   //bouton.waitUntilPressed();
-  //Robot.main();
+  robot.main();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  Serial.println(capteur.mesure());
-  delay(150);
 }

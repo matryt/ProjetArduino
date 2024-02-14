@@ -26,6 +26,7 @@ void Moteur::stop() {
 
 void Moteur::config_spinning(char direction) {
     bool isForward = (direction == DIRECTION::AVANT);
+    Serial.println(isForward);
     digitalWrite(in1, isForward);
     digitalWrite(in2, !isForward);
 }

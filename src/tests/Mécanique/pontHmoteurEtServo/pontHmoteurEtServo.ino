@@ -46,7 +46,7 @@ void loop() {
   digitalWrite(borneIN4,LOW);
   digitalWrite(borneENB,HIGH);
   delay(100);
-  for (int i = 0; i <= 180; i++) {
+  for (int i = 0; i <= 90; i++) {
     monServo.write(i);
     delay(15);
   }

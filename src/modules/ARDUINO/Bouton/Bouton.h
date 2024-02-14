@@ -8,8 +8,10 @@
 #include <Arduino.h>
 
 class Bouton {
-    int PIN;
+public:
     void init(int pin);
+private:
+    int PIN;
     int readValue();
     bool waitUntilPressed();
 };

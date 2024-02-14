@@ -11,7 +11,7 @@ void setup() {
   // put your setup code here, to run once:
   capteur.init();
   Serial.begin(9600);
-  Robot.main();
+  robot.main();
 }
 
 

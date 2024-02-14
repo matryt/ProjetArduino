@@ -50,7 +50,7 @@ void loop() {
     monServo.write(i);
     delay(15);
   }
-  for (int i = 180; i >= 0; i--) {
+  for (int i = 90; i >= 0; i--) {
     monServo.write(i);
     delay(15);
   }

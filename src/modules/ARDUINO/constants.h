@@ -20,15 +20,15 @@ namespace DIRECTION {
 }
 
 namespace MOTEUR {
-    const int VITESSE_MIN =  70;
+    const int VITESSE_MIN =  75;
     const int VITESSE_MAX =  255;
     const int VITESSE_DEMI_TOUR =  70;
     const int DELAI_VARIATION_VITESSE = 20;
-    const int DELAI_DEMI_TOUR = 5000;
+    const int DELAI_DEMI_TOUR = 8000;
     const int DELAI_LINEAIRE = 200;
     const int INCREMENT =  10;
     const int DISTANCE_FREINAGE = 40;
-    const int DIFF_VITESSE_DEMITOUR = 180;
+    const int DIFF_VITESSE_DEMITOUR = 185;
 }
 
 namespace SIDES {
@@ -37,8 +37,8 @@ namespace SIDES {
 }
 
 namespace SERVO {
-    const int INCREMENT =  5;
-    const int MIN_ANGLE =  15;
+    const int INCREMENT =  1;
+    const int MIN_ANGLE =  20;
     const int MAX_ANGLE =  90;
 }
 

@@ -13,10 +13,6 @@ void Moteur::init(int enable, int in1, int in2) {
 }
 
 void Moteur::config_speed(int speed) {
-    Serial.print("Config ! ");
-    Serial.print(EN);
-    Serial.print(" ");
-    Serial.println(speed);
     analogWrite(EN, speed);
 }
 

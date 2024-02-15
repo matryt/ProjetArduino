@@ -44,6 +44,7 @@ img_lcd = image.Image()
 img_face = image.Image(size=(128, 128))
 a = img_face.pix_to_ai()
 ACCURACY = 80
+timestamp = 0
 
 ### Classe
 
@@ -163,6 +164,10 @@ def display_result(a, max_score):
     return a
 
 def send_image_via_socket(gateway, name):
+    global timestamp
+    if time.ticks() - timestamp < 1500:
+        return
+    timestamp = time.ticks()
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((gateway, 5000))

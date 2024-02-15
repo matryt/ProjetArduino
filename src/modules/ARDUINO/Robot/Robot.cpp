@@ -13,10 +13,11 @@ void Robot::init() {
     capteur.init();
     gauche.init(PINS::ENA, PINS::IN1, PINS::IN2);
     droite.init(PINS::ENB, PINS::IN3, PINS::IN4);
+    s.init();
 }
 
 void Robot::config_speed(int speed) {
-    gauche.config_speed(speed);
+    gauche.config_speed(speed-20);
     droite.config_speed(speed);
 }
 
@@ -69,7 +70,6 @@ void Robot::straight_line() {
     start();
     speed_up(MOTEUR::VITESSE_MIN, MOTEUR::VITESSE_MAX, MOTEUR::INCREMENT);
     while (capteur.mesure() > MOTEUR::DISTANCE_FREINAGE) {
-        Serial.println("Continue !");
         delay(MOTEUR::DELAI_LINEAIRE);
         s.next();
     }

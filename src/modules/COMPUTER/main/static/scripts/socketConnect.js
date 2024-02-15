@@ -1,10 +1,13 @@
-let socket = io.connect(document.domain + ':' + location.port);
-console.log(socket);
+const socket = new WebSocket('ws://localhost:8765');
 
-socket.on('connect', function(){
-   console.log('Successfully connected!');
+socket.addEventListener('open', function (event) {
+    socket.send('Hello Server!');
 });
-socket.on('reload', function(data) {
-   console.log("Received reload request", data)
-   window.location.reload();
+
+socket.addEventListener('message', function (event) {
+    const message = JSON.parse(event.data);
+    if (message.action === 'reload') {
+        console.log("Received reload request");
+        window.location.reload();
+    }
 });

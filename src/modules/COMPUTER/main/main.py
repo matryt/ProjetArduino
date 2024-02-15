@@ -4,6 +4,8 @@ import socket
 from flask_socketio import SocketIO
 import sqlite3
 import datetime
+import asyncio
+import websockets
 
 app = Flask(__name__)
 images = []
@@ -19,6 +21,7 @@ cImages.execute('''CREATE TABLE images (id INTEGER PRIMARY KEY, timestamp TEXT, 
 
 connImages.commit()
 connImages.close()
+
 
 socketio = SocketIO(app)
 
@@ -40,6 +43,7 @@ def history():
     conn.close()
     return render_template('history.html', history=history)
 
+
 @app.route('/manage', methods=['GET'])
 def manage():
     return render_template('manage.html')
@@ -55,6 +59,7 @@ def manage_form():
     data = request.form
     process_data(data)
     return redirect(url_for("history"))
+
 
 def process_data(d):
     for c, v in d.items():
@@ -75,6 +80,7 @@ def suppress_history_alerts(start, end):
     connHistory.commit()
     connHistory.close()
 
+
 def suppress_all_history():
     connHistory = sqlite3.connect('history.db')
     cHistory = connHistory.cursor()
@@ -82,46 +88,47 @@ def suppress_all_history():
     connHistory.commit()
     connHistory.close()
 
+
 def receive_data(conn):
     data = ''
     while True:
+        print(data)
         try:
             chunk = conn.recv(1024)
             if not chunk:
                 break
             data += chunk.decode("utf-8")
             lines = data.split('\n')
-            for line in lines[:-1]:
-                # Process each line
-                global path
-                if line == "U":
-                    path = "unknown.png"
-                    text = "Unknown face. Danger !"
-                else:
-                    path = f"{line}.JPG"
-                    text = "Good face ! Go ahead."
-                timestamp = datetime.datetime.now().strftime("%H:%M:%S")
+            for line in lines:
+                if len(line) != 0:
+                    global path
+                    if line == "U":
+                        path = "unknown.png"
+                        text = "Unknown face. Danger !"
+                    else:
+                        path = f"{line}.JPG"
+                        text = "Good face ! Go ahead."
+                    timestamp = datetime.datetime.now().strftime("%H:%M:%S")
 
-                connImages = sqlite3.connect('images.db')
-                cImages = connImages.cursor()
-                cImages.execute("INSERT INTO images VALUES (NULL, ?, ?, ?)", (timestamp, text, path))
-                connImages.commit()
-                connImages.close()
+                    connImages = sqlite3.connect('images.db')
+                    cImages = connImages.cursor()
+                    cImages.execute("INSERT INTO images VALUES (NULL, ?, ?, ?)", (timestamp, text, path))
+                    connImages.commit()
+                    connImages.close()
 
-                connHistory = sqlite3.connect('history.db')
-                cHistory = connHistory.cursor()
-                formatted_date = datetime.datetime.now().strftime("%d/%m/%Y")
-                cHistory.execute("INSERT INTO history VALUES (NULL, ?, ?, ?, ?)", (formatted_date, timestamp, text, path))
+                    connHistory = sqlite3.connect('history.db')
+                    cHistory = connHistory.cursor()
+                    formatted_date = datetime.datetime.now().strftime("%d/%m/%Y")
+                    cHistory.execute("INSERT INTO history VALUES (NULL, ?, ?, ?, ?)",
+                                     (formatted_date, timestamp, text, path))
 
-                socketio.emit('reload', {'message': 'New content added'})
-                print("Content added !")
-                connHistory.commit()
-                connHistory.close()
-            data = lines[-1] # Keep the remaining data
+                    socketio.emit('reload', {'message': 'New content added'})
+                    print("Content added !")
+                    connHistory.commit()
+                    connHistory.close()
         except Exception as e:
             print(f"Error: {e}")
             break
-
 
 
 def start_receiving_images():

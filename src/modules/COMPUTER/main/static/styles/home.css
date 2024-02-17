@@ -145,11 +145,11 @@ form p {
 		transition: all .2s;
 	}
 	[type="checkbox"]:not(:checked) + label .ui:before {
-		content: "no";
-		left: 20px
+		content: "Non";
+		left: 15px
 	}
 	[type="checkbox"]:checked + label .ui:after {
-		content: "yes";
+		content: "Oui";
 		color: #39D2B4;
 	}
 	[type="checkbox"]:focus + label:before {

@@ -11,7 +11,7 @@ namespace PINS {
     const int IN4 =  9;
     const int INFRARED =  0;
     const int SERVO =  13;
-    const int BOUTON = 4;
+    const int BOUTON = 11;
 }
 
 namespace DIRECTION {

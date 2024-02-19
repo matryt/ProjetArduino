@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Images from MaixDuino</title>
+</head>
+<body>
+ {% for image in images %}
+ <div>
+     <p>{{ image.timestamp }}</p>
+     <p>{{ image.text }}</p>
+     <img src="data:image/jpeg;base64,{{ image.image }}" />
+ </div>
+ {% endfor %}
+</body>
+</html>

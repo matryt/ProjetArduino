@@ -10,7 +10,7 @@
 class Bouton {
 public:
     void init(int pin);
-private:
+public:
     int PIN;
     int readValue();
     bool waitUntilPressed();

@@ -43,7 +43,7 @@ namespace SERVO {
 }
 
 namespace BOUTON {
-    const int TARGET_VALUE = 1;
+    const int TARGET_VALUE = 0;
     const int DELAI_ATTENTE = 200;
 }
 

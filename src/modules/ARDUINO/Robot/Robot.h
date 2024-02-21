@@ -17,7 +17,7 @@ class Robot {
 
 public:
     void init();
-    void config_speed(int speed);
+    void config_speed(int speed,float offset);
     void speed_up(int speed, int target_speed, int increment);
     void slow_down(int speed, int target_speed, int increment);
     void config_spinning(char direction);

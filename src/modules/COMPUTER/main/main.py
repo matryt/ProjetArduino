@@ -144,7 +144,7 @@ def start_receiving_images():
 
 
 if __name__ == "__main__":
-    threading.Thread(target=start_receiving_images).start()
+    #threading.Thread(target=start_receiving_images).start()
     """threading.Thread(target=generate_random).start()
     random_content()"""
     app.run(host='localhost', port=5005, debug=True)

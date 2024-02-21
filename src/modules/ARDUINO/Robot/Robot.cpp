@@ -16,26 +16,30 @@ void Robot::init() {
     s.init();
 }
 
-void Robot::config_speed(int speed) {
-    gauche.config_speed(speed-20);
+void Robot::config_speed(int speed,float offset) {
+    gauche.config_speed(speed-offset);
     droite.config_speed(speed);
 }
 
 void Robot::speed_up(int speed, int target_speed, int increment) {
+    int i=0;
     while (speed < target_speed) {
         speed += increment;
-        config_speed(speed);
+        config_speed(speed,MOTEUR::OFFSET +2.5*i);
         delay(MOTEUR::DELAI_VARIATION_VITESSE);
         s.next();
+        i++;
     }
 }
 
 void Robot::slow_down(int speed, int target_speed, int increment) {
+    int i=17;
     while (speed > target_speed) {
         speed -= increment;
-        config_speed(speed);
+        config_speed(speed,MOTEUR::OFFSET+2.5*i);
         delay(MOTEUR::DELAI_VARIATION_VITESSE);
         s.next();
+        i--;
     }
 }
 
@@ -43,7 +47,6 @@ void Robot::config_spinning(char direction) {
     gauche.config_spinning(direction);
     droite.config_spinning(direction);
 }
-
 void Robot::start() {
     gauche.start();
     droite.start();

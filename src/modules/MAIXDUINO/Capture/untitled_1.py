@@ -136,6 +136,7 @@ def process_face():
         record_ftr = feature
         record_ftrs.append(record_ftr)
         start_processing = False
+        print("Face added !")
 
 def wifi_connection():
     WIFI_SSID = "DESKTOP-M5RI8E3"

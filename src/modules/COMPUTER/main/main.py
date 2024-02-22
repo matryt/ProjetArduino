@@ -106,6 +106,8 @@ def receive_data(conn):
                         path = "unknown.png"
                         text = "Unknown face. Danger !"
                     else:
+                        line = int(line) // 2 + 1
+                        print(line)
                         path = f"{line}.JPG"
                         text = "Good face ! Go ahead."
                     timestamp = datetime.datetime.now().strftime("%H:%M:%S")

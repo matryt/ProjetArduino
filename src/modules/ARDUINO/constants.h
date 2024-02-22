@@ -29,6 +29,7 @@ namespace MOTEUR {
     const int INCREMENT =  10;
     const int DISTANCE_FREINAGE = 40;
     const int DIFF_VITESSE_DEMITOUR = 185;
+    const int OFFSET=20;
 }
 
 namespace SIDES {
@@ -38,12 +39,12 @@ namespace SIDES {
 
 namespace SERVO {
     const int INCREMENT =  1;
-    const int MIN_ANGLE =  20;
+    const int MIN_ANGLE =  40;
     const int MAX_ANGLE =  90;
 }
 
 namespace BOUTON {
-    const int TARGET_VALUE = 1;
+    const int TARGET_VALUE = 0;
     const int DELAI_ATTENTE = 200;
 }
 

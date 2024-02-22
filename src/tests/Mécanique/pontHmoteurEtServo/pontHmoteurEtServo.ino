@@ -42,8 +42,8 @@ void loop() {
   digitalWrite(borneIN1,HIGH);
   digitalWrite(borneIN2,LOW);
   digitalWrite(borneENA,HIGH);
-  digitalWrite(borneIN3,HIGH);
-  digitalWrite(borneIN4,LOW);
+  digitalWrite(borneIN3,LOW);
+  digitalWrite(borneIN4,HIGH);
   digitalWrite(borneENB,HIGH);
   delay(100);
   for (int i = 0; i <= 90; i++) {

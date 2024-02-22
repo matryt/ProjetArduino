@@ -13,7 +13,7 @@ void setup() {
   bouton.init(PINS::BOUTON);
   Serial.begin(9600);
   robot.init();
-  //bouton.waitUntilPressed();
+  bouton.waitUntilPressed();
   robot.main();
 }
 
